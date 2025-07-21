@@ -6,66 +6,91 @@ This is a simple web-based application that predicts a person's mental health sc
 
 The app looks clean, friendly, and simple for any user to try. It is not meant to be a professional medical tool, but it gives a meaningful insight into how our habits might affect our mental health.
 
-How It Works
+
+
+Why this topic?
+
+Mental health is becoming increasingly important, especially with rising screen time and changing lifestyles. I chose this topic to create something simple yet meaningful that helps raise awareness and encourages healthier daily habits. It’s a way to connect machine learning with real-life wellness in a friendly, accessible format.
+
+
+
+ How It Works
 
 The app uses a machine learning model trained on example data. It takes in two inputs:
 
-1. Screen Time (hours per day)
+1. Screen Time** (hours per day)
 2. Exercise (minutes per day)
 
 Once the user enters these, the app calculates and shows:
 
-- A mental health score between 0 and 100
-- A colored circle with a message:
-  - Green: Doing great
-  - Yellow: Room to improve
-  - Red: Habits may need serious changes
+A mental health score between 0 and 100**
+A colored circle with a message:
+
+   🟢 Green: Doing great
+   🟡 Yellow: Room to improve
+   🔴 Red: Habits may need serious changes
+
+
 
 What Makes This App Useful
 
 Even though it's a simple app, it shows how powerful even small machine learning models can be. It connects daily life with technology and can help beginners understand how data can give insights into health and behavior.
 
-Libraries Used
 
-- Streamlit: To create a beautiful and interactive web interface.
-- Pandas: To handle user input and structure the data for prediction.
-- Scikit-learn: Used to build and load the machine learning model.
-- Joblib: To save and load the trained model quickly.
+
+ Libraries Used
+
+Streamlit: To create a beautiful and interactive web interface.
+Pandas: To handle user input and structure the data for prediction.
+Scikit-learn: Used to build and load the machine learning model.
+Joblib: To save and load the trained model quickly.
+
+
 
 Machine Learning and Preprocessing
 
-- The dataset used includes samples of screen time and exercise data along with mental health scores.
-- The model used is **Linear Regression**, chosen because it's simple, effective, and works well with just two input features.
-- Data was cleaned and normalized to remove any noise.
-- Features (screen time and exercise) were scaled to keep predictions reliable.
-- The model was trained using this clean data and saved as a `.pkl` file.
+The dataset used includes samples of screen time and exercise data along with **mental health scores**.
+The model used is Linear Regression, chosen because it's simple, effective, and works well with just two input features.
+Data was **cleaned and normalized** to remove any noise.
+Features (screen time and exercise) were **scaled* to keep predictions reliable.
+The model was trained using this clean data and saved as a `.pkl` file.
+
 
 Why Linear Regression?
 
-This model is used because it fits well when the relationship between inputs and output is continuous and easy to map with a line. Since we only have two features and the goal is to get a numeric score, linear regression is the best fit without making things unnecessarily complex.
+Linear Regression was selected because it performs well when the relationship between the inputs and output is continuous and fairly linear. Since the goal is to generate a numeric score from just two simple inputs, it's the best fit without introducing unnecessary complexity.
+
+
 
 About the Dataset
 
-The dataset is made-up (demo data) and includes columns like:
+The dataset is synthetic (demo) and includes three columns:
 
-- Screen Time (in hours per day)
-- Exercise Time (in minutes per day)
-- Mental Health Score (out of 100)
+Screen Time** (hours per day)
+Exercise Time** (minutes per day)
+Mental Health Score** (0–100)
 
-Each row represents a different person’s daily habits. The model learns patterns from these examples and uses them to predict scores for new users.
+Each row represents a different individual’s daily habits. The model learns patterns from this and applies it to predict a new user’s score.
 
-Color-Based Results
 
-After the model gives a score, the app displays a message based on how high or low the score is:
 
-🟢 Green (Score 80–100):  
+ Color-Based Results
+
+After the model gives a score, the app displays a feedback message with a colored indicator:
+
+ 🟢 Green (Score 80–100):
+
 You are following very healthy habits. Keep it up. You likely feel emotionally balanced and energized.
 
-🟡 Yellow (Score 60–79):  
+ 🟡 Yellow (Score 60–79):
+
 You are doing okay, but could feel better. Try small changes like less screen time or more exercise.
 
-🔴 Red (Score below 60):  
+ 🔴 Red (Score below 60):
+
 Your habits might be affecting your mental well-being. Try to take breaks from screens, get some movement, and improve your routine gradually.
+
+
 
 Conclusion
 
@@ -73,9 +98,12 @@ This project is a great example of how small data projects can be meaningful. It
 
 This project is ideal for beginners learning:
 
-- Machine learning
-- Streamlit and UI creation
-- Connecting models to real-life inputs
-- Data preprocessing and scoring
-  
-# MentalHealthPredictor
+Machine learning
+Streamlit and UI creation
+Connecting models to real-life inputs
+Data preprocessing and scoring
+
+
+
+
+
