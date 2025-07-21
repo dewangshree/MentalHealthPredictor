@@ -2,13 +2,13 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-# 🧠 Page Config
+
 st.set_page_config(page_title="Mental Health Score Predictor", page_icon="🧠", layout="centered")
 
-# 🔁 Load the trained model
+
 model = joblib.load('/Users/shreyasvikrantdewangswami/MentalHealthApp/mental_health_model.pkl')
 
-# 🌟 Header
+
 st.markdown("""
     <div style='text-align: center; padding: 10px;'>
         <h1 style='color:#4CAF50;'>🧠 Mental Health Score Predictor</h1>
@@ -16,7 +16,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# 📊 Input Section
+
 with st.container():
     st.markdown("### 📥 Enter Your Daily Habits")
     col1, col2 = st.columns(2)
@@ -33,7 +33,7 @@ if st.button("✨ Predict My Score"):
         screen_time, exercise
     ]], columns=['Screen_Time_Hours', 'Exercise_Minutes'])
 
-    # 🔮 Prediction
+    #  Prediction
     raw_score = model.predict(input_df)[0]
     score = max(0, min(100, raw_score))
 
@@ -51,7 +51,7 @@ if st.button("✨ Predict My Score"):
         msg = "Your score is low. Consider healthier routines. You're not alone—start small! ❤️"
         color = "#FFCDD2"
 
-    # 🎉 Result Card
+    #  Result Card
     st.markdown(f"""
         <div style="background-color:{color}; padding:20px; border-radius:15px; text-align:center;">
             <h2 style='color:#333;'>{emoji} Your Predicted Mental Health Score: <strong>{score:.1f} / 100</strong></h2>
@@ -59,6 +59,6 @@ if st.button("✨ Predict My Score"):
         </div>
     """, unsafe_allow_html=True)
 
-# ℹ️ Footer
+# ℹ Footer
 st.markdown("---")
 st.caption("💡 Built with a simple linear regression model. This app is for educational/demo purposes only.")
