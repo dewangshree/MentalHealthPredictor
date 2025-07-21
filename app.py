@@ -53,9 +53,9 @@ if st.button("✨ Predict My Score"):
 
     #  Result Card
     st.markdown(f"""
-        <div style="background-color:{color}; padding:20px; border-radius:15px; text-align:center;">
-            <h2 style='color:#333;'>{emoji} Your Predicted Mental Health Score: <strong>{score:.1f} / 100</strong></h2>
-            <p style='font-size:17px;'>{msg}</p>
+        <div style="background-color:{color}; padding:20px; border-radius:15px; text-align:center; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+            <h2 style='color:#000000; font-size: 24px; margin-bottom: 10px;'>{emoji} Your Predicted Mental Health Score: <strong>{score:.1f} / 100</strong></h2>
+            <p style='font-size:18px; color:#111111;'>{msg}</p>
         </div>
     """, unsafe_allow_html=True)
 
