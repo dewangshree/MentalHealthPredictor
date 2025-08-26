@@ -35,10 +35,26 @@ def load_model():
         st.stop()
     return joblib.load(p)
 
+def prepare_features(model, screen_hours: float, exercise_hours: float) -> pd.DataFrame:
+    ex_minutes = exercise_hours * 60.0
+    features = {}
+    names = getattr(model, "feature_names_in_", None)
+    if names is None:
+        names = ["Screen_Time_Hours", "Exercise_Minutes"]
+    for name in names:
+        if name.lower() == "screen_time_hours":
+            features[name] = float(screen_hours)
+        elif name.lower() == "exercise_minutes":
+            features[name] = float(ex_minutes)
+        elif name.lower() == "exercise_hours":
+            features[name] = float(exercise_hours)
+        else:
+            features[name] = 0.0
+    return pd.DataFrame([features], columns=list(names))
+
 model = load_model()
 
 st.markdown("<div class='wrap'>", unsafe_allow_html=True)
-
 st.markdown(
     """
     <div class="hero">
@@ -60,45 +76,33 @@ with st.container():
     go = st.button("Predict My Score", use_container_width=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
-def score_palette(val: float):
+def palette(val: float):
     if val >= 80:
-        return {"bg": "#E8F5E9", "border": "#2E7D32", "text": "#1B5E20", "bar": "#2E7D32", "label": "Excellent"}
+        return {"bg": "#E8F5E9", "border": "#2E7D32", "text": "#1B5E20"}
     if val >= 60:
-        return {"bg": "#FFF8E1", "border": "#F9A825", "text": "#9E7700", "bar": "#F9A825", "label": "Moderate"}
-    return {"bg": "#FFEBEE", "border": "#C62828", "text": "#B71C1C", "bar": "#C62828", "label": "Needs Attention"}
+        return {"bg": "#FFF8E1", "border": "#F9A825", "text": "#9E7700"}
+    return {"bg": "#FFEBEE", "border": "#C62828", "text": "#B71C1C"}
 
 if go:
-    df = pd.DataFrame([[screen_time, exercise]], columns=["Screen_Time_Hours", "Exercise_Hours"])
-    raw = float(model.predict(df)[0])
-    score = max(0, min(100, raw))
-    pal = score_palette(score)
+    X = prepare_features(model, screen_time, exercise)
+    y_pred = model.predict(X)[0]
+    score = max(0.0, min(100.0, float(y_pred)))
+    pal = palette(score)
 
     st.markdown(
         f"""
         <div class='result' style="background:{pal['bg']}; border-color:{pal['border']};">
             <div class="muted" style="margin-bottom:6px;">Your Predicted Mental Health Score</div>
-            <div class="score-badge" style="color:{pal['text']}; border:2px solid {pal['border']}; background: #ffffff;">{score:.1f} / 100</div>
-            <div class="muted" style="margin-top:8px; font-weight:600; color:{pal['text']};">{pal['label']}</div>
+            <div class="score-badge" style="color:{pal['text']}; border:2px solid {pal['border']}; background:#ffffff;">{score:.1f} / 100</div>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
-    st.progress(min(100, int(score)))
-
-    with st.expander("Quick suggestions", expanded=False):
-        st.markdown(
-            """
-            - Aim for **balanced** screen time; set limits and take regular breaks.  
-            - Try to keep **exercise** consistent (even 0.5–1 hour daily is great).  
-            - Track habits for a week and adjust gradually.  
-            """,
-        )
-
 st.markdown("</div>", unsafe_allow_html=True)
-
 st.markdown("---")
 st.caption("Built with a simple linear regression model. This app is for educational/demo purposes only.")
+
 
 
 
