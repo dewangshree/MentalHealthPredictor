@@ -43,7 +43,7 @@ st.markdown(
     """
     <div class="hero">
         <h1>Mental Health Score Predictor</h1>
-        <p>Estimate your mental wellness score based on screen time and exercise.</p>
+        <p>Estimate your mental wellness score based on screen time and exercise (both in hours/day).</p>
     </div>
     """,
     unsafe_allow_html=True,
@@ -54,9 +54,9 @@ with st.container():
     st.markdown("<div class='section-title'>Enter Your Daily Habits</div>", unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     with col1:
-        screen_time = st.slider("Screen Time (hours/day)", 0.0, 12.0, 4.0, step=0.5, help="Average hours spent on screens per day")
+        screen_time = st.slider("Screen Time (hours/day)", 0.0, 12.0, 4.0, step=0.5)
     with col2:
-        exercise = st.slider("Exercise (minutes/day)", 0, 120, 30, help="Approximate minutes of physical activity per day")
+        exercise = st.slider("Exercise (hours/day)", 0.0, 4.0, 0.5, step=0.25)
     go = st.button("Predict My Score", use_container_width=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -68,7 +68,7 @@ def score_palette(val: float):
     return {"bg": "#FFEBEE", "border": "#C62828", "text": "#B71C1C", "bar": "#C62828", "label": "Needs Attention"}
 
 if go:
-    df = pd.DataFrame([[screen_time, exercise]], columns=["Screen_Time_Hours", "Exercise_Minutes"])
+    df = pd.DataFrame([[screen_time, exercise]], columns=["Screen_Time_Hours", "Exercise_Hours"])
     raw = float(model.predict(df)[0])
     score = max(0, min(100, raw))
     pal = score_palette(score)
@@ -84,14 +84,14 @@ if go:
         unsafe_allow_html=True,
     )
 
-    st.progress(min(100, int(score)))  # simple visual bar
+    st.progress(min(100, int(score)))
 
     with st.expander("Quick suggestions", expanded=False):
         st.markdown(
             """
-            - Aim for **balanced** screen time; set small limits and take short breaks.
-            - Try to keep **exercise** consistent (even a brisk 15–20 min walk helps).
-            - Track habits for a week and adjust gradually.
+            - Aim for **balanced** screen time; set limits and take regular breaks.  
+            - Try to keep **exercise** consistent (even 0.5–1 hour daily is great).  
+            - Track habits for a week and adjust gradually.  
             """,
         )
 
@@ -99,6 +99,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown("---")
 st.caption("Built with a simple linear regression model. This app is for educational/demo purposes only.")
+
 
 
 
