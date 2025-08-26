@@ -8,23 +8,20 @@ st.set_page_config(page_title="Mental Health Score Predictor", layout="centered"
 st.markdown(
     """
     <style>
-      html, body, .stApp, [data-testid="stAppViewContainer"], [data-testid="stVerticalBlock"],
-      .block-container, [data-testid="stHeader"] {
-        background:#ffffff !important; color:#000000 !important; box-shadow:none !important;
-      }
-      /* Tighten top spacing so no stray bar appears */
-      .block-container { padding-top: 0.5rem !important; }
-      /* Simple, clean cards */
+      html, body, .stApp, [data-testid="stAppViewContainer"] { background:#ffffff !important; color:#000000 !important; }
+      .wrap { max-width: 820px; margin: 0 auto; }
+      .hero { padding: 18px 8px 0 8px; text-align:center; }
+      .hero h1 { margin: 0; font-size: 34px; letter-spacing: 0.2px; color:#0F5132; }
+      .hero p { margin: 6px 0 0 0; font-size: 16px; opacity: .85; }
       .card { background:#ffffff; border:1px solid #ECECEC; border-radius:16px; padding:18px; box-shadow: 0 4px 18px rgba(0,0,0,.06); }
       .result { border-radius:16px; padding:22px; text-align:center; box-shadow: 0 6px 22px rgba(0,0,0,.08); border:2px solid transparent; }
       .score-badge { display:inline-block; padding:10px 18px; border-radius:999px; font-weight:800; font-size:28px; }
       .muted { color:#222; opacity:.8; }
       .section-title { font-weight:700; margin: 0 0 6px 0; font-size:18px; }
-      .stButton>button { border-radius: 10px; padding: .6rem 1.1rem; font-weight:600; border: 1px solid #4CAF50; width: 100%; }
-      /* Centered hero without extra wrappers that create ghost bars */
-      .hero { padding: 18px 8px 6px 8px; text-align:center; }
-      .hero h1 { margin: 0; font-size: 34px; letter-spacing: 0.2px; color:#0F5132; }
-      .hero p { margin: 6px auto 0 auto; font-size: 16px; opacity: .85; max-width: 720px; }
+      .stButton>button { border-radius: 10px; padding: .6rem 1.1rem; font-weight:600; border: 1px solid #4CAF50; }
+      .grid { display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
+      @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } }
+      .tip { font-size:14px; padding:12px 14px; border-radius:12px; border:1px dashed #E0E0E0; background:#FAFAFA; }
     </style>
     """,
     unsafe_allow_html=True,
@@ -40,15 +37,16 @@ def load_model():
 
 def prepare_features(model, screen_hours: float, exercise_hours: float) -> pd.DataFrame:
     ex_minutes = exercise_hours * 60.0
-    names = getattr(model, "feature_names_in_", None) or ["Screen_Time_Hours", "Exercise_Minutes"]
     features = {}
+    names = getattr(model, "feature_names_in_", None)
+    if names is None:
+        names = ["Screen_Time_Hours", "Exercise_Minutes"]
     for name in names:
-        key = name.lower()
-        if key == "screen_time_hours":
+        if name.lower() == "screen_time_hours":
             features[name] = float(screen_hours)
-        elif key == "exercise_minutes":
+        elif name.lower() == "exercise_minutes":
             features[name] = float(ex_minutes)
-        elif key == "exercise_hours":
+        elif name.lower() == "exercise_hours":
             features[name] = float(exercise_hours)
         else:
             features[name] = 0.0
@@ -56,7 +54,7 @@ def prepare_features(model, screen_hours: float, exercise_hours: float) -> pd.Da
 
 model = load_model()
 
-
+st.markdown("<div class='wrap'>", unsafe_allow_html=True)
 st.markdown(
     """
     <div class="hero">
@@ -67,16 +65,16 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-
-st.markdown("<div class='card'>", unsafe_allow_html=True)
-st.markdown("<div class='section-title'>Enter Your Daily Habits</div>", unsafe_allow_html=True)
-col1, col2 = st.columns(2)
-with col1:
-    screen_time = st.slider("Screen Time (hours/day)", 0.0, 12.0, 4.0, step=0.5)
-with col2:
-    exercise = st.slider("Exercise (hours/day)", 0.0, 4.0, 0.5, step=0.25)
-go = st.button("Predict My Score")
-st.markdown("</div>", unsafe_allow_html=True)
+with st.container():
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.markdown("<div class='section-title'>Enter Your Daily Habits</div>", unsafe_allow_html=True)
+    col1, col2 = st.columns(2)
+    with col1:
+        screen_time = st.slider("Screen Time (hours/day)", 0.0, 12.0, 4.0, step=0.5)
+    with col2:
+        exercise = st.slider("Exercise (hours/day)", 0.0, 4.0, 0.5, step=0.25)
+    go = st.button("Predict My Score", use_container_width=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 def palette(val: float):
     if val >= 80:
@@ -101,6 +99,7 @@ if go:
         unsafe_allow_html=True,
     )
 
+st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("---")
 st.caption("Built with a simple linear regression model. This app is for educational/demo purposes only.")
 
