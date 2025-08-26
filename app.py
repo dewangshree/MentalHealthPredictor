@@ -5,7 +5,6 @@ from pathlib import Path
 
 st.set_page_config(page_title="Mental Health Score Predictor", layout="centered", initial_sidebar_state="collapsed")
 
-# --- CSS: force light background and remove any extra block/header backgrounds ---
 st.markdown(
     """
     <style>
@@ -57,7 +56,7 @@ def prepare_features(model, screen_hours: float, exercise_hours: float) -> pd.Da
 
 model = load_model()
 
-# --- HERO (no extra outer wrappers) ---
+
 st.markdown(
     """
     <div class="hero">
@@ -68,7 +67,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# --- INPUT CARD ---
+
 st.markdown("<div class='card'>", unsafe_allow_html=True)
 st.markdown("<div class='section-title'>Enter Your Daily Habits</div>", unsafe_allow_html=True)
 col1, col2 = st.columns(2)
