@@ -9,6 +9,8 @@ st.markdown(
     """
     <style>
       html, body, .stApp, [data-testid="stAppViewContainer"] { background:#ffffff !important; color:#000000 !important; }
+      .block-container { padding-top: 1rem !important; padding-bottom: 1rem !important; background: transparent !important; }
+      [data-testid="stVerticalBlock"] { background: transparent !important; padding: 0 !important; }
       .wrap { max-width: 820px; margin: 0 auto; }
       .hero { padding: 18px 8px 0 8px; text-align:center; }
       .hero h1 { margin: 0; font-size: 34px; letter-spacing: 0.2px; color:#0F5132; }
@@ -26,6 +28,7 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
 
 @st.cache_resource
 def load_model():
