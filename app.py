@@ -12,7 +12,10 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-      body, .stApp { background: #ffffff !important; color: #000000 !important; }
+      html, body, .stApp, [data-testid="stAppViewContainer"] {
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
     </style>
     """,
     unsafe_allow_html=True,
@@ -38,32 +41,27 @@ st.markdown("""
 with st.container():
     st.markdown("### Enter Your Daily Habits")
     col1, col2 = st.columns(2)
-
     with col1:
         screen_time = st.slider("Screen Time (hours/day)", 0.0, 12.0, 4.0, step=0.5)
     with col2:
         exercise = st.slider("Exercise (minutes/day)", 0, 120, 30)
 
 if st.button("Predict My Score"):
-    input_df = pd.DataFrame(
-        [[screen_time, exercise]],
-        columns=["Screen_Time_Hours", "Exercise_Minutes"],
-    )
-
+    input_df = pd.DataFrame([[screen_time, exercise]], columns=["Screen_Time_Hours", "Exercise_Minutes"])
     raw_score = model.predict(input_df)[0]
     score = max(0, min(100, raw_score))
 
     if score >= 80:
-        color = "#C8E6C9"
+        color = "#C8E6C9"   # green
     elif score >= 60:
-        color = "#FFF9C4"
+        color = "#FFF9C4"   # yellow
     else:
-        color = "#FFCDD2"
+        color = "#FFCDD2"   # red
 
     st.markdown(
         f"""
-        <div style="background-color:{color}; padding:20px; border-radius:15px; text-align:center; box-shadow: 0 0 10px rgba(0,0,0,0.08);">
-            <h2 style='color:#000000; font-size: 24px; margin-bottom: 10px;'>
+        <div style="background-color:{color} !important; padding:20px; border-radius:15px; text-align:center; box-shadow:0 0 10px rgba(0,0,0,0.08);">
+            <h2 style='color:#000000; font-size:24px; margin-bottom:10px;'>
                 Your Predicted Mental Health Score: <strong>{score:.1f} / 100</strong>
             </h2>
         </div>
@@ -73,4 +71,5 @@ if st.button("Predict My Score"):
 
 st.markdown("---")
 st.caption("Built with a simple linear regression model. This app is for educational/demo purposes only.")
+
 
