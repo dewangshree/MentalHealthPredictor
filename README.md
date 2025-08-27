@@ -2,8 +2,8 @@ Mental Health Score Predictor
 
 This project is a simple but meaningful web application that predicts a person’s mental health score based on two daily lifestyle habits: screen time and exercise. The application gives a score out of 100 along with a short interpretation of what that score means for overall well-being. It is designed to be easy to use, clean, and approachable for beginners. While it is not a medical or diagnostic tool, it is intended to encourage reflection on everyday habits and how they may relate to mental health.
 
-The app is live and can be accessed online through Streamlit here:
-[https://mentalhealthpredictor-enkctfobpwl9dknp3urkah.streamlit.app/](https://mentalhealthpredictor-enkctfobpwl9dknp3urkah.streamlit.app/)
+[The app is live and can be accessed online through Streamlit here:
+[https://mentalhealthpredictor-enkctfobpwl9dknp3urkah.streamlit.app/]https://custommentalhealthpredictor.streamlit.app/](https://custommentalhealthpredictor.streamlit.app/)
 
 The full source code and resources are available on GitHub:
 [https://github.com/dewangshree/MentalHealthPredictor](https://github.com/dewangshree/MentalHealthPredictor)
