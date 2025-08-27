@@ -147,7 +147,7 @@ PRO_TIPS = {
     ],
 }
 
-# ---------- App ----------
+
 model = load_model()
 
 st.markdown("<div class='wrap'>", unsafe_allow_html=True)
@@ -215,9 +215,6 @@ if go:
         unsafe_allow_html=True,
     )
 
-    # ---------------------------
-    # Personalized Recommendations
-    # ---------------------------
     target_exercise_per_day = 0.5
     low_exercise_threshold = 0.25
 
