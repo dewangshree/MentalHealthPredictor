@@ -165,7 +165,6 @@ with st.container():
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.markdown("<div class='section-title'>Enter Your Daily Habits</div>", unsafe_allow_html=True)
 
-    # Presets and Profession
     col_top1, col_top2 = st.columns([1, 1])
     with col_top1:
         preset = st.selectbox(
@@ -176,13 +175,11 @@ with st.container():
     with col_top2:
         profession = st.selectbox("Profession", PROFESSIONS, index=0)
 
-    # Session defaults so presets can control sliders
     if "screen_time_val" not in st.session_state:
         st.session_state.screen_time_val = 4.0
     if "exercise_val" not in st.session_state:
         st.session_state.exercise_val = 0.5
 
-    # Apply preset values
     if preset == "Office routine":
         st.session_state.screen_time_val = 7.5
         st.session_state.exercise_val = 0.25
@@ -221,20 +218,19 @@ if go:
     # ---------------------------
     # Personalized Recommendations
     # ---------------------------
-    target_exercise_per_day = 0.5  # 30 minutes/day
-    low_exercise_threshold = 0.25  # 15 minutes/day
+    target_exercise_per_day = 0.5
+    low_exercise_threshold = 0.25
 
     st.markdown("<div class='card' style='margin-top:14px;'>", unsafe_allow_html=True)
     st.markdown("<div class='section-title'>Personalized Recommendations</div>", unsafe_allow_html=True)
 
-    # Exercise recommendations based on input level
     if exercise == 0:
         st.markdown(
             """
             <div class="tip">
               <strong>Start moving gradually:</strong><br>
               • Begin with 10–15 minutes of easy activity daily (walking, light stretching, or beginner yoga).<br>
-              • Add 5 minutes every few days until you reach about 30 minutes per day on at least 5 days/week.<br>
+              • Add 5 minutes every few days until you reach about 30 minutes per day.<br>
               • Keep it simple: short walks after meals, take stairs, light bodyweight exercises at home.
             </div>
             """,
@@ -245,9 +241,9 @@ if go:
             f"""
             <div class="tip">
               <strong>Increase activity to reach a healthy baseline:</strong><br>
-              • You're doing about {exercise:.2f} h/day. Aim for at least {target_exercise_per_day:.2f} h/day (≈30 minutes).<br>
-              • Add about 10 minutes per day each week and schedule 5 active days/week.<br>
-              • Mix cardio (walking, cycling) with light strength work (squats, push-ups, resistance bands).
+              • You're doing about {exercise:.2f} h/day. Aim for at least {target_exercise_per_day:.2f} h/day (~30 minutes).<br>
+              • Add ~10 minutes per day each week and schedule 5 active days/week.<br>
+              • Mix cardio (walking, cycling) with light strength work (squats, push-ups, bands).
             </div>
             """,
             unsafe_allow_html=True,
@@ -257,7 +253,7 @@ if go:
             f"""
             <div class="tip">
               <strong>You're close to the recommended level:</strong><br>
-              • Current: {exercise:.2f} h/day. Target: {target_exercise_per_day:.2f} h/day (≈30 minutes).<br>
+              • Current: {exercise:.2f} h/day. Target: {target_exercise_per_day:.2f} h/day (~30 minutes).<br>
               • Add one more short session or extend two sessions by 10 minutes.<br>
               • Keep one rest day and focus on consistency over intensity.
             </div>
@@ -269,22 +265,21 @@ if go:
             """
             <div class="tip">
               <strong>Maintain what's working:</strong><br>
-              • You're at or above 30 minutes/day. Keep a routine you enjoy and rotate activities to prevent burnout.<br>
+              • You're at or above 30 minutes/day. Keep a routine you enjoy and rotate activities.<br>
               • Include recovery: gentle stretching or a light day each week.
             </div>
             """,
             unsafe_allow_html=True,
         )
 
-    # Screen-time recommendations
     if screen_time > 6:
         st.markdown(
             f"""
             <div class="tip" style="margin-top:10px;">
               <strong>Reduce high screen time:</strong><br>
-              • Current: {screen_time:.1f} h/day. Try cutting 30–60 minutes by batching notifications and using app limits.<br>
-              • Insert short no-screen breaks every 60–90 minutes and avoid screens 60 minutes before bedtime.<br>
-              • Swap with low-effort activities: short walk, stretching, reading, or a call with a friend.
+              • Current: {screen_time:.1f} h/day. Cut 30–60 minutes using app limits.<br>
+              • Insert short breaks every 60–90 minutes and avoid screens 1h before bed.<br>
+              • Replace with reading, stretching, or outdoor time.
             </div>
             """,
             unsafe_allow_html=True,
@@ -294,8 +289,8 @@ if go:
             f"""
             <div class="tip" style="margin-top:10px;">
               <strong>Fine-tune screen habits:</strong><br>
-              • Current: {screen_time:.1f} h/day. A small reduction (15–30 minutes) can improve sleep and mood.<br>
-              • Use scheduled focus modes and cluster social/app checks into set windows.
+              • Current: {screen_time:.1f} h/day. Reducing 15–30 minutes may improve sleep and mood.<br>
+              • Use focus modes and batch notifications.
             </div>
             """,
             unsafe_allow_html=True,
@@ -305,13 +300,12 @@ if go:
             """
             <div class="tip" style="margin-top:10px;">
               <strong>Good balance on screen use:</strong><br>
-              • Keep protecting off-screen time and keep evenings calm for better sleep quality.
+              • Protect off-screen time and keep evenings calm for better sleep quality.
             </div>
             """,
             unsafe_allow_html=True,
         )
 
-    # Profession-specific tips
     tips = PRO_TIPS.get(profession, [])
     if tips:
         st.markdown(
@@ -325,31 +319,27 @@ if go:
             unsafe_allow_html=True,
         )
 
-    # Critical-condition exercise plans (based on predicted score)
-    # Define severity tiers
-    severe_cut = 40.0
-    moderate_cut = 60.0
-    if score < severe_cut:
+    if score < 40:
         st.markdown(
             """
             <div class="tip" style="margin-top:10px;">
-              <strong>When your score is low, start with low-impact plans:</strong><br>
-              • 10–15 minutes/day of easy walking or chair exercises; focus on gentle range-of-motion.<br>
-              • 1–2 beginner yoga or breathing sessions per week (10–20 minutes).<br>
-              • Prioritize sleep routine and daytime light exposure.<br>
-              • If you have pain, dizziness, or chronic conditions, speak with a qualified professional before progressing.
+              <strong>Critical plan (low score):</strong><br>
+              • Start with 10–15 minutes/day gentle walking or chair exercises.<br>
+              • Add 1–2 light yoga or breathing sessions weekly.<br>
+              • Prioritize good sleep and daylight exposure.<br>
+              • Consult a health professional if you have chronic conditions.
             </div>
             """,
             unsafe_allow_html=True,
         )
-    elif score < moderate_cut:
+    elif score < 60:
         st.markdown(
             """
             <div class="tip" style="margin-top:10px;">
-              <strong>Build steadily with moderate-intensity options:</strong><br>
-              • Aim for 25–30 minutes/day on 5 days/week: brisk walk, cycling, or low-impact aerobics.<br>
-              • Add short strength circuits twice weekly (squats, wall push-ups, hip hinges).<br>
-              • Keep one lighter day for recovery and stretching.
+              <strong>Moderate plan:</strong><br>
+              • Aim 25–30 minutes/day brisk walk or cycling, 5 days/week.<br>
+              • Add light strength training twice weekly.<br>
+              • Keep one light day for recovery/stretching.
             </div>
             """,
             unsafe_allow_html=True,
@@ -359,138 +349,19 @@ if go:
             """
             <div class="tip" style="margin-top:10px;">
               <strong>Maintain and refine:</strong><br>
-              • Keep your 30 minutes/day baseline, consider variety (intervals, hills, cycling).<br>
-              • Add mobility and core work 2–3 times per week for resilience.
+              • Continue 30 min/day baseline with variety (intervals, cycling).<br>
+              • Add mobility/core work 2–3 times weekly.
             </div>
             """,
             unsafe_allow_html=True,
         )
 
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    # ---------------------------
-    # What-if Analysis
-    # ---------------------------
-    def clamp(v, lo, hi):
-        return max(lo, min(hi, v))
-
-    st.markdown("<div class='card' style='margin-top:14px;'>", unsafe_allow_html=True)
-    st.markdown("<div class='section-title'>What-if Analysis</div>", unsafe_allow_html=True)
-
-    col_w1, col_w2 = st.columns(2)
-    with col_w1:
-        delta_ex = st.slider("Adjust exercise (± hours/day)", -0.5, 1.0, 0.0, step=0.25)
-    with col_w2:
-        delta_sc = st.slider("Adjust screen time (± hours/day)", -2.0, 2.0, 0.0, step=0.25)
-
-    sim_ex = clamp(exercise + delta_ex, 0.0, 4.0)
-    sim_sc = clamp(screen_time + delta_sc, 0.0, 12.0)
-
-    X_sim = prepare_features(model, sim_sc, sim_ex)
-    sim_score = max(0.0, min(100.0, float(model.predict(X_sim)[0])))
-    diff = sim_score - score
-
-    st.markdown(
-        f"""
-        <div class="tip">
-          <strong>Simulated score:</strong> {sim_score:.1f} / 100
-          <br>Change vs current: {diff:+.1f}
-          <br>New inputs → Exercise: {sim_ex:.2f} h/day, Screen: {sim_sc:.2f} h/day
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    # ---------------------------
-    # Reach a Target Score (linear estimate)
-    # ---------------------------
-    st.markdown("<div class='card' style='margin-top:14px;'>", unsafe_allow_html=True)
-    st.markdown("<div class='section-title'>Reach a Target Score</div>", unsafe_allow_html=True)
-
-    target = st.slider("Choose a target score", 50, 90, 70, step=1)
-
-    def estimate_extra_exercise_hours(target_score: float):
-        coef = getattr(model, "coef_", None)
-        names = getattr(model, "feature_names_in_", None)
-        if coef is None or names is None:
-            return None  # non-linear or missing metadata
-
-        name_map = {n.lower(): n for n in names}
-        coef_map = {n.lower(): float(c) for n, c in zip(names, coef)}
-
-        # Current prediction
-        row = prepare_features(model, screen_time, exercise)
-        current_pred = float(model.predict(row)[0])
-
-        # Determine which exercise feature is used
-        ex_key = None
-        scale_to_hours = 1.0
-        if "exercise_hours" in name_map and "exercise_hours" in coef_map:
-            ex_key = "exercise_hours"
-            scale_to_hours = 1.0
-        elif "exercise_minutes" in name_map and "exercise_minutes" in coef_map:
-            ex_key = "exercise_minutes"
-            scale_to_hours = 60.0
-        else:
-            return None
-
-        ex_coef = coef_map.get(ex_key, 0.0)
-        if abs(ex_coef) < 1e-9:
-            return None
-
-        delta_feature = (target_score - current_pred) / ex_coef
-        delta_hours = float(delta_feature) / scale_to_hours
-        return delta_hours
-
-    delta_needed = estimate_extra_exercise_hours(target)
-    if delta_needed is None:
-        st.markdown(
-            "<div class='tip'>A precise estimate is not available for this model. Try the What-if Analysis sliders above to explore improvements.</div>",
-            unsafe_allow_html=True,
-        )
-    else:
-        st.markdown(
-            f"""
-            <div class="tip">
-              To reach a score of <strong>{target}</strong>, you would need approximately
-              <strong>{abs(delta_needed)*60:.0f} additional minutes/day</strong> of exercise (estimate).
-              Use the What-if Analysis to verify.
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    # ---------------------------
-    # Session History & Download
-    # ---------------------------
-    if "history" not in st.session_state:
-        st.session_state.history = []
-
-    st.session_state.history.append(
-        {
-            "score": round(score, 1),
-            "screen_time_h": round(screen_time, 2),
-            "exercise_h": round(exercise, 2),
-            "profession": profession,
-        }
-    )
-
-    hist_df = pd.DataFrame(st.session_state.history)
-
-    st.markdown("<div class='card' style='margin-top:14px;'>", unsafe_allow_html=True)
-    st.markdown("<div class='section-title'>Session History</div>", unsafe_allow_html=True)
-    st.dataframe(hist_df, use_container_width=True)
-
-    csv = hist_df.to_csv(index=False).encode("utf-8")
-    st.download_button("Download session as CSV", csv, "mental_health_session.csv", "text/csv")
     st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("---")
 st.caption("Built with a simple linear regression model. This app is for educational/demo purposes only.")
+
 
 
 
